@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AdminEntity } from './entities/Admin.entity';
 import { ApartmentEntity } from './entities/Apartment.entity';
@@ -14,9 +13,11 @@ import { PictureEntity } from './entities/Picture.entity';
 import { PropertyEntity } from './entities/Property.entity';
 import { StudioEntity } from './entities/Studio.entity';
 import { UserEntity } from './entities/User.entity';
+import { PropertyModule } from './modules/property/property.module';
 
 @Module({
   imports: [
+    PropertyModule,
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -28,7 +29,7 @@ import { UserEntity } from './entities/User.entity';
       synchronize: true,
     }),
   ],
-  controllers: [AppController],
-  providers: [AppService],
+  controllers: [],
+  providers: [],
 })
 export class AppModule {}
