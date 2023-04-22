@@ -4,6 +4,7 @@ import { CommentEntity } from "./Comment.entity";
 import { PictureEntity } from "./Picture.entity";
 import { AdminEntity } from "./Admin.entity";
 import { UserEntity } from "./User.entity";
+import { LandlordEntity } from "./Landlord.entity";
 
 @Entity('Property')
 export class PropertyEntity {
@@ -56,8 +57,8 @@ export class PropertyEntity {
     @OneToMany(type => PictureEntity, picture => picture.property)
     pictures: PictureEntity[];
 
-    @ManyToOne(type => AdminEntity, admin => admin.properties)
-    owner: AdminEntity;
+    @ManyToOne(type => LandlordEntity, landlord => landlord.properties)
+    owner: LandlordEntity;
 
     @ManyToOne(type => UserEntity, user => user.OccupiedProperties)
     occupant: UserEntity;
