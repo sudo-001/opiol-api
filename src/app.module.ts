@@ -2,6 +2,18 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { AdminEntity } from './entities/Admin.entity';
+import { ApartmentEntity } from './entities/Apartment.entity';
+import { ChamberEntity } from './entities/Chamber.entity';
+import { CommentEntity } from './entities/Comment.entity';
+import { FavoriteEntity } from './entities/Favorite.entity';
+import { HouseEntity } from './entities/House.entity';
+import { LandlordEntity } from './entities/Landlord.entity';
+import { PaymentEntity } from './entities/Payment.entity';
+import { PictureEntity } from './entities/Picture.entity';
+import { PropertyEntity } from './entities/Property.entity';
+import { StudioEntity } from './entities/Studio.entity';
+import { UserEntity } from './entities/User.entity';
 
 @Module({
   imports: [
@@ -12,7 +24,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       username: 'root',
       password: '',
       database: 'OpiolDatabase',
-      entities: [],
+      entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
   ],

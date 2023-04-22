@@ -1,5 +1,8 @@
 import { IsEmail } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { FavoriteEntity } from "./Favorite.entity";
+import { PaymentEntity } from "./Payment.entity";
+import { PropertyEntity } from "./Property.entity";
 
 @Entity('User')
 export class UserEntity {
@@ -45,4 +48,14 @@ export class UserEntity {
     
     @CreateDateColumn()
     created: Date;
+
+    @ManyToMany(type => FavoriteEntity)
+    @JoinTable()
+    favorites: FavoriteEntity[];
+
+    @OneToMany(type => PaymentEntity, payment => payment.sender)
+    payments: PaymentEntity[];
+
+    @OneToMany(type => PropertyEntity, property => property.occupant)
+    OccupiedProperties: PropertyEntity[];
 }

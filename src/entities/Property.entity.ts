@@ -1,5 +1,9 @@
 import { Max, Min } from "class-validator";
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { CommentEntity } from "./Comment.entity";
+import { PictureEntity } from "./Picture.entity";
+import { AdminEntity } from "./Admin.entity";
+import { UserEntity } from "./User.entity";
 
 @Entity('Property')
 export class PropertyEntity {
@@ -45,5 +49,17 @@ export class PropertyEntity {
 
     @CreateDateColumn()
     created: Date;
+
+    @OneToMany(type => CommentEntity, comment => comment.property)
+    comments: CommentEntity[];
+
+    @OneToMany(type => PictureEntity, picture => picture.property)
+    pictures: PictureEntity[];
+
+    @ManyToOne(type => AdminEntity, admin => admin.properties)
+    owner: AdminEntity;
+
+    @ManyToOne(type => UserEntity, user => user.OccupiedProperties)
+    occupant: UserEntity;
 
 }

@@ -1,4 +1,5 @@
-import { Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "./User.entity";
 
 @Entity('Favorite')
 export class FavoriteEntity {
@@ -7,5 +8,6 @@ export class FavoriteEntity {
     })
     id: number;
 
-    
+    @ManyToMany(type => UserEntity)
+    users: UserEntity[];
 }

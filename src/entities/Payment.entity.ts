@@ -1,4 +1,5 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { UserEntity } from "./User.entity";
 
 @Entity('Payment')
 export class PaymentEntity {
@@ -14,4 +15,7 @@ export class PaymentEntity {
         type: 'text',
     })
     reason: string;
+    
+    @ManyToOne(type => UserEntity, user => user.payments)
+    sender: UserEntity;
 }

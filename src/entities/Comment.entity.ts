@@ -1,4 +1,5 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { PropertyEntity } from "./Property.entity";
 
 @Entity('Comments')
 export class CommentEntity {
@@ -21,4 +22,7 @@ export class CommentEntity {
 
     @CreateDateColumn()
     created: Date;
+
+    @ManyToOne(type => PropertyEntity, property => property.comments)
+    property: PropertyEntity;
 }
