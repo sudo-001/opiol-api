@@ -32,10 +32,10 @@ export class PropertyService {
             id: id
         })
 
-        if (!property)
-            return null;
+        // if (!property)
+        //     return null;
         
-        this.propertyRepository.remove(property);
+        // this.propertyRepository.remove(property);
 
         return property;
     }
