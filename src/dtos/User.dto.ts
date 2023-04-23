@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { FavoriteEntity } from "src/entities/Favorite.entity";
 
 export class UserDto {
-
+    
     @ApiProperty()
     lastName: string;
 
