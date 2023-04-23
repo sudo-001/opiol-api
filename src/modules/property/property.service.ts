@@ -11,7 +11,34 @@ export class PropertyService {
         private readonly propertyRepository: Repository<PropertyEntity>,
     ) {}
 
-    findAll() {
-        const properties = this.propertyRepository.find
+    findAll():Promise<PropertyEntity[]> {
+        const properties = this.propertyRepository.find();
+
+        return properties;
     }
+
+    findOne(id: number) {
+        const property = this.propertyRepository.findOneBy({
+            id: id,
+        })
+
+        if (property)
+            return property;
+        return null;
+    }
+
+    async setToDeleted(id: number) {
+        const property = await this.propertyRepository.findOneBy({
+            id: id
+        })
+
+        if (!property)
+            return null;
+        
+        this.propertyRepository.remove(property);
+
+        return property;
+    }
+
+
 }
