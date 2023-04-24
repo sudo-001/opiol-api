@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
+import { PropertyDto } from 'src/dtos/Property.dto';
 import { PropertyEntity } from 'src/entities/Property.entity';
 import { Repository } from 'typeorm';
 
@@ -27,18 +28,29 @@ export class PropertyService {
         return null;
     }
 
+
+    async createProperty(property: PropertyDto): Promise<any>{
+        // Have to check images before save it
+        // 
+        
+        const response = await this.propertyRepository.save(property);
+        return property;
+    }
+
     async setToDeleted(id: number) {
         const property = await this.propertyRepository.findOneBy({
             id: id
         })
 
-        // if (!property)
-        //     return null;
+        if (!property)
+            return null;
         
-        // this.propertyRepository.remove(property);
+        this.propertyRepository.remove(property);
 
         return property;
     }
+
+
 
 
 }

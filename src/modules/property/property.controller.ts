@@ -1,6 +1,7 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param } from '@nestjs/common';
+import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { PropertyEntity } from 'src/entities/Property.entity';
+import { FileInterceptor } from '@nestjs/platform-express';
 
 @Controller('property')
 export class PropertyController {
@@ -22,6 +23,16 @@ export class PropertyController {
         if (property)
             return property;
         throw new HttpException("Entity not found", HttpStatus.NOT_FOUND);
+    }
+
+
+    @UseInterceptors(FileInterceptor('file'))
+    @Post('file')
+    uploadFile(
+        @UploadedFile() file: Express.Multer.File) {
+        console.log(file);
+
+        return "File uploaded";
     }
 
     @Delete(':property_id')

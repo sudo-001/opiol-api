@@ -3,9 +3,12 @@ import { PropertyController } from './property.controller';
 import { PropertyService } from './property.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PropertyEntity } from 'src/entities/Property.entity';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([PropertyEntity])],
+  imports: [
+    MulterModule.register({ dest: "./uploads"}),
+    TypeOrmModule.forFeature([PropertyEntity])],
   controllers: [PropertyController],
   providers: [PropertyService]
 })

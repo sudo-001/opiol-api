@@ -14,10 +14,12 @@ import { PropertyEntity } from './entities/Property.entity';
 import { StudioEntity } from './entities/Studio.entity';
 import { UserEntity } from './entities/User.entity';
 import { PropertyModule } from './modules/property/property.module';
+import { MulterModule } from '@nestjs/platform-express';
 
 @Module({
   imports: [
     PropertyModule,
+    MulterModule.register({ dest: './uploads'}),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
