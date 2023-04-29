@@ -21,4 +21,5 @@ export class PropertyDto {
 
     @ApiProperty()
     rate: number;
+
 }
