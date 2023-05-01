@@ -15,6 +15,7 @@ import { StudioEntity } from './entities/Studio.entity';
 import { UserEntity } from './entities/User.entity';
 import { PropertyModule } from './modules/property/property.module';
 import { MulterModule } from '@nestjs/platform-express';
+import { CommentsModule } from './modules/comments/comments.module';
 
 @Module({
   imports: [
@@ -30,6 +31,7 @@ import { MulterModule } from '@nestjs/platform-express';
       entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
+    CommentsModule,
   ],
   controllers: [],
   providers: [],
