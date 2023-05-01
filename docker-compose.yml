@@ -4,36 +4,52 @@ services:
   db:
     image: mysql:5.7
     volumes:
-      - db_data: /var/lib/mysql
+      - db_data:/var/lib/mysql
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: ""
+      MYSQL_ROOT_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD=1
       MYSQL_DATABASE: OpiolDatabase
-      MYSQL_USER: root
-      MYSQL_PASSWORD: ""
+      MYSQL_ROOT_USER: mysql
+      MYSQL_ROOT_HOST: '%'
     ports:
-      -"3306:3306"
+      - '3306:3306'
+    expose:
+      - '3306'
+    networks:
+      - mysql-phpmyadmin
   phpmyAdmin:
     image: phpmyadmin/phpmyadmin
-    links:
+    depends_on:
       - db
     environment:
       PMA_HOST: db
-      PMA_POSRT: 3306
+      PMA_PORT: 3306
+      MYSQL_ROOT_PASSWORD: MYSQL_ALLOW_EMPTY_PASSWORD=1
       PMA_ARBITRARY: 1
     restart: always
     ports:
-      -8081:80
+      - "8081:80"
+    networks:
+      - mysql-phpmyadmin
   api:
-    build: .
+    # build: .
+    image: opiolapi
     volumes:
-      - .:usr/app
+      - .:/usr/app
       - /usr/app/node_modules
+    restart: always
     ports:
-      - "3000:3000" 
-    command: npm run start:dev
+      - 8000:8000
+    # command: npm run start:prod
+    command: node dist/main
     depends_on:
       - db
+      - phpmyAdmin
+    expose:
+      - 8000
     
+networks:
+  mysql-phpmyadmin:
+  
 volumes:
   db_data: {}

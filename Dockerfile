@@ -16,7 +16,7 @@ COPY src/ src/
 RUN npm run build
 
 # Remove the original src directory (our new compiled source is in the `dist` folder)
-# RUN rm -r src
+RUN rm -r src
 
 # Start the server using the production build
 # CMD ["node", "dist/main.js"]
@@ -26,4 +26,4 @@ RUN npm run build
 
 # CMD ["npm", "run build"]
 
-CMD ["npm", "-r src"]
+CMD ["rm", "-r src"]

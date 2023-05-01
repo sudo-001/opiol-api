@@ -17,7 +17,7 @@ export class PropertyService {
     ) {}
 
     findAll():Promise<PropertyEntity[]> {
-        const properties = this.propertyRepository.find();
+        const properties = this.propertyRepository.find({ relations: ["comments", "pictures", "owner", "occupant"]});
 
         return properties;
     }
@@ -81,5 +81,5 @@ export class PropertyService {
 
 
 
-
+    
 }
