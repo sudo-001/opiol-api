@@ -14,7 +14,7 @@ import { PropertyEntity } from './entities/Property.entity';
 import { StudioEntity } from './entities/Studio.entity';
 import { UserEntity } from './entities/User.entity';
 import { PropertyModule } from './modules/property/property.module';
-import { LandlordModule } from './landlord/landlord.module';
+
 
 @Module({
   imports: [
@@ -29,7 +29,7 @@ import { LandlordModule } from './landlord/landlord.module';
       entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
-    LandlordModule,
+    
   ],
   controllers: [],
   providers: [],
