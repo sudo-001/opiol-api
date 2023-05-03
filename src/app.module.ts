@@ -18,6 +18,7 @@ import { MulterModule } from '@nestjs/platform-express';
 import { CommentsModule } from './modules/comments/comments.module';
 
 
+
 @Module({
   imports: [
     PropertyModule,
@@ -32,11 +33,8 @@ import { CommentsModule } from './modules/comments/comments.module';
       entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
-<<<<<<< HEAD
-    
-=======
     CommentsModule,
->>>>>>> 683135ca53754e28f698f8f63b8c65ff23f12b21
+   
   ],
   controllers: [],
   providers: [],

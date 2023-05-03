@@ -3,11 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class PictureDto {
 
     @ApiProperty()
-<<<<<<< HEAD
-    name: string;
-
-} 
-=======
+ 
     fieldname: string;
 
     @ApiProperty()
@@ -31,4 +27,3 @@ export class PictureDto {
     @ApiProperty()
     size: number;
 }
->>>>>>> 683135ca53754e28f698f8f63b8c65ff23f12b21
