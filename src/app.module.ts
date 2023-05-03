@@ -14,11 +14,14 @@ import { PropertyEntity } from './entities/Property.entity';
 import { StudioEntity } from './entities/Studio.entity';
 import { UserEntity } from './entities/User.entity';
 import { PropertyModule } from './modules/property/property.module';
+import { MulterModule } from '@nestjs/platform-express';
+import { CommentsModule } from './modules/comments/comments.module';
 
 
 @Module({
   imports: [
     PropertyModule,
+    MulterModule.register({ dest: './uploads'}),
     TypeOrmModule.forRoot({
       type: 'mysql',
       host: 'localhost',
@@ -29,7 +32,11 @@ import { PropertyModule } from './modules/property/property.module';
       entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
+<<<<<<< HEAD
     
+=======
+    CommentsModule,
+>>>>>>> 683135ca53754e28f698f8f63b8c65ff23f12b21
   ],
   controllers: [],
   providers: [],

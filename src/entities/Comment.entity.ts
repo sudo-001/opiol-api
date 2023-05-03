@@ -11,11 +11,17 @@ export class CommentEntity {
     @Column({
         type: 'text', 
     })
+    owner: string;
+
+    @Column({
+        type: 'text', 
+    })
     text: string;
 
 
     @Column({
         type: 'boolean',
+        default: true,
     })
     visible: boolean;
 
