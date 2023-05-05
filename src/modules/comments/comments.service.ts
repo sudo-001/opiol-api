@@ -38,4 +38,18 @@ export class CommentsService {
 
     }
 
+    // Change the visibility of a comment
+    async changeVisibility(commentId: number) {
+        const comment = await this.CommentsRepository.findOne({
+            where: {id: commentId}
+        });
+
+        if (!comment)
+            return null;
+
+        comment.visible = !comment.visible;
+
+        return this.CommentsRepository.save(comment);
+    }
+
 }

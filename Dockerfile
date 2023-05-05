@@ -1,29 +1,83 @@
-# THE BASE IMAGE
-FROM node:18-alpine
+###################
+# BUILD FOR LOCAL DEVELOPMENT
+###################
 
-# Create app directory
+FROM node:18-alpine AS development
+
 WORKDIR /usr/src/app
 
-COPY package*.json tsconfig*.json ./
+COPY --chown=node:node package*.json tsconfig*.json OpiolDatabase* ./
 
-# Install app dependencies
-RUN npm install
+RUN npm ci
 
-# Bundle app source
-COPY src/ src/
+COPY --chown=node:node . .
 
-# Creates a "dist" folder with the production build
+USER node
+
+
+###################
+# BUILD FOR PRODUCTION
+###################
+
+FROM node:18-alpine AS build
+
+WORKDIR /usr/src/app
+
+COPY --chown=node:node package*.json tsconfig*.json OpiolDatabase* ./
+
+COPY --chown=node:node --from=development /usr/src/app/node_modules ./node_modules
+
+COPY --chown=node:node . .
+
 RUN npm run build
 
-# Remove the original src directory (our new compiled source is in the `dist` folder)
-RUN rm -r src
+ENV NODE_ENV production
 
-# Start the server using the production build
+RUN npm ci --only=production && npm cache clean --force
+
+USER node
+
+
+###################
+# PRODUCTION
+###################
+
+FROM node:18-alpine AS production
+
+COPY --chown=node:node --from=build /usr/src/app/node_modules ./node_modules
+COPY --chown=node:node --from=build /usr/src/app/dist ./dist
+COPY OpiolDatabase* ./
+
+CMD ["node", "dist/main.js"]
+
+
+
+# # THE BASE IMAGE
+# FROM node:18-alpine
+
+# # Create app directory
+# WORKDIR /usr/src/app
+
+# COPY package*.json tsconfig*.json ./
+
+# # Install app dependencies
+# RUN npm install
+
+# # Bundle app source
+# COPY src/ src/
+
+# # Creates a "dist" folder with the production build
+# RUN npm run build
+
+# # Remove the original src directory (our new compiled source is in the `dist` folder)
+# RUN rm -r src
+
+# # Start the server using the production build
 # CMD ["node", "dist/main.js"]
 
-# Assign `npm run start:prod` as the default command to run when booting the container
-# CMD ["npm", "run", "start:prod"]
+# # Assign `npm run start:prod` as the default command to run when booting the container
+# # CMD ["npm", "run", "start:prod"]
 
-# CMD ["npm", "run build"]
+# # CMD ["npm", "run build"]
 
-CMD ["rm", "-r src"]
+# # CMD ["rm", "-r src"]

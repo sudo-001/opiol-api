@@ -43,6 +43,12 @@ export class PropertyEntity {
     })
     numberOfRooms: number;
 
+    @Column({
+        type: 'boolean',
+        default: true
+    })
+    visible: boolean;
+
     @Column()
     @Min(0)
     @Max(5)

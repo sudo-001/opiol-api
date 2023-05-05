@@ -79,7 +79,19 @@ export class PropertyService {
         return property;
     }
 
+    // Change visibility of a property
+    async changeVisibility(propertyId: number) {
+        const property = await this.propertyRepository.findOne({
+            where: {id: propertyId}
+        });
+        
+        if (!property)
+            return null;
+        
+        property.visible = !property.visible
 
+        return this.propertyRepository.save(property);
+    }
 
     
 }

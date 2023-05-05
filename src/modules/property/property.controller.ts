@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, FileTypeValidator, Get, HttpException, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseFilePipeBuilder, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { Body, Controller, Delete, FileTypeValidator, Get, HttpException, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseFilePipeBuilder, Post, Put, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { PropertyEntity } from 'src/entities/Property.entity';
 import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
@@ -117,6 +117,16 @@ export class PropertyController {
         if (property)
             return property;
         throw new HttpException("Property not found", HttpStatus.NOT_FOUND);
+    }
+
+    @Put(':property_id')
+    async changeVisibility(@Param("property_id") propertyId: number) {
+        const property = await this.propertyService.changeVisibility(propertyId);
+
+        if (property)
+            return property;
+        
+        throw new HttpException("Property Not found", HttpStatus.NOT_FOUND)
     }
 
 }

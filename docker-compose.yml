@@ -45,11 +45,13 @@ services:
     depends_on:
       - db
       - phpmyAdmin
+    links:
+      - db
     expose:
       - 8000
     
 networks:
-  mysql-phpmyadmin:
+  mysql-phpmyadmin: {}
   
 volumes:
   db_data: {}

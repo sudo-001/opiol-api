@@ -1,4 +1,4 @@
-import { Body, Controller, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CommentDto } from 'src/dtos/Comment.dto';
 
@@ -22,5 +22,16 @@ export class CommentsController {
             return result;
         
         throw new HttpException("Can't comment the property maybe property not found", HttpStatus.NOT_FOUND);
+    }
+
+    // Function to change the visibility of a comment
+    @Put('/:comment_id')
+    async changeVisibility(@Param('comment_id') commentId: number) {
+        const comment = await this.commentsService.changeVisibility(commentId);
+
+        if (comment)
+            return comment;
+        
+        throw new HttpException("Comment not found", HttpStatus.NOT_FOUND)
     }
 }
