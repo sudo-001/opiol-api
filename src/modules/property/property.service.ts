@@ -16,12 +16,14 @@ export class PropertyService {
         private readonly pictureRepository: Repository<PictureEntity>,
     ) {}
 
+    // Service to find all properties
     findAll():Promise<PropertyEntity[]> {
         const properties = this.propertyRepository.find({ relations: ["comments", "pictures", "owner", "occupant"]});
 
         return properties;
     }
 
+    // Service to find a specific property
     findOne(id: number) {
         const property = this.propertyRepository.findOneBy({
             id: id,
@@ -93,5 +95,20 @@ export class PropertyService {
         return this.propertyRepository.save(property);
     }
 
-    
+    // Rate a property
+    async ratePoperty(propertyId: number, rate: number) {
+        const property = await this.propertyRepository.findOne({
+            where: {id: propertyId}
+        });
+
+        if (!property)
+            return null;
+        
+        if (rate >= 5.0)
+            return "The rate must be less than 5.0"
+        
+        property.rate = rate;
+
+        return this.propertyRepository.save(property);
+    }
 }

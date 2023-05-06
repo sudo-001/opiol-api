@@ -14,11 +14,13 @@ export class PropertyController {
     ) { }
 
 
+    // Controller to get all the properties
     @Get()
     getAll() {
         return this.propertyService.findAll();
     }
 
+    // Controller to get one specific property
     @Get(':property_id')
     async findOne(@Param('property_id') propertyId: string) {
         const property = await this.propertyService.findOne(parseInt(propertyId));
@@ -60,7 +62,7 @@ export class PropertyController {
     // }
 
     
-    // Upload d'un tableau d'images
+    // Controller to add an array of image uploaded corresponding to a property
     @Post('/pictures/:article_id')
     @UseInterceptors(FilesInterceptor('files',3,{
         storage: diskStorage({
@@ -99,7 +101,7 @@ export class PropertyController {
     }
 
 
-    // Route pour créer ajouter une propiété à la base de données proprement dite
+    // Controller to add property information without images to the database
     @Post()
     async creteProperty(@Body() property: PropertyDto) {
         const propertyAdded = await this.propertyService.createProperty(property);
@@ -110,7 +112,8 @@ export class PropertyController {
         throw new HttpException("Can't create an article", HttpStatus.NOT_MODIFIED)
     }
 
-    @Delete(':property_id')
+    // Controller to delete a property
+    @Delete('/delete/:property_id')
     async remove(@Param('property_id') propertyId: string) {
         const property = await this.propertyService.setToDeleted(parseInt(propertyId));
 
@@ -119,7 +122,8 @@ export class PropertyController {
         throw new HttpException("Property not found", HttpStatus.NOT_FOUND);
     }
 
-    @Put(':property_id')
+    // Controller to change the visibility of a property
+    @Put('/visibility/:property_id')
     async changeVisibility(@Param("property_id") propertyId: number) {
         const property = await this.propertyService.changeVisibility(propertyId);
 
@@ -129,4 +133,17 @@ export class PropertyController {
         throw new HttpException("Property Not found", HttpStatus.NOT_FOUND)
     }
 
+    // Controller to rate a property
+    @Put('/rate/:property_id')
+    async rateProperty(@Param("property_id") propertyId: number,@Body() propertyWithNewRate: PropertyDto) {
+        const result = await this.propertyService.ratePoperty(propertyId, propertyWithNewRate.rate);
+
+        if (result != null)
+            return result;
+        if (result == "The rate must be less than 5.0")
+            return "The rate must be less than 5.0"
+        
+        throw new HttpException("Property not found", HttpStatus.NOT_FOUND)
+
+    }
 }

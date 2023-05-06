@@ -49,7 +49,9 @@ export class PropertyEntity {
     })
     visible: boolean;
 
-    @Column()
+    @Column({
+        type: 'decimal'
+    })
     @Min(0)
     @Max(5)
     rate: number;
