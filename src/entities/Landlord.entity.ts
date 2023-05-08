@@ -1,4 +1,4 @@
-import { Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "./User.entity";
 import { PropertyEntity } from "./Property.entity";
 
@@ -8,6 +8,9 @@ export class LandlordEntity extends UserEntity {
         name: 'landlord_id',
     })
     id: number;
+
+    @Column()
+    idCard: string;
 
     @OneToMany(type => PropertyEntity, property => property.owner)
     properties: PropertyEntity[];

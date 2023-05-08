@@ -16,6 +16,10 @@ import { UserEntity } from './entities/User.entity';
 import { PropertyModule } from './modules/property/property.module';
 import { MulterModule } from '@nestjs/platform-express';
 import { CommentsModule } from './modules/comments/comments.module';
+import { UserModule } from './modules/user/user.module';
+import { LandlordModule } from './modules/landlord/landlord.module';
+
+
 
 @Module({
   imports: [
@@ -33,6 +37,10 @@ import { CommentsModule } from './modules/comments/comments.module';
       synchronize: true,
     }),
     CommentsModule,
+    UserModule,
+    LandlordModule,
+    
+   
   ],
   controllers: [],
   providers: [],

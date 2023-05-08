@@ -40,7 +40,7 @@ export class PropertyService {
         // 
         
         const response = await this.propertyRepository.save(property);
-        return property;
+        return response;
     }
 
     async addPicturesToProperty(propertyId: number, pictures: PictureDto[]) {

@@ -17,10 +17,8 @@ export class UserEntity {
     })
     firstName: string;
 
-    @Column({
-        type: 'boolean',
-    })
-    sex: boolean;
+    @Column()
+    sex: string;
 
     @Column({ type: Date })
     birthDate: Date;
