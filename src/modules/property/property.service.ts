@@ -25,8 +25,9 @@ export class PropertyService {
 
     // Service to find a specific property
     findOne(id: number) {
-        const property = this.propertyRepository.findOneBy({
-            id: id,
+        const property = this.propertyRepository.findOne({
+            where: {id: id},
+            relations: ["comments", "pictures", "owner", "occupant"]
         })
 
         if (property)

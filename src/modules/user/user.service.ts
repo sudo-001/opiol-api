@@ -32,6 +32,19 @@ export class UserService {
     return null;
   }
 
+  async update(userId: number, userToUpdate: UserDto) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId }
+    });
+
+    if (!user)
+      return null;
+    
+    const response = await this.userRepository.update(userId, userToUpdate);
+
+    return response;
+  }
+
   async setToDeleted(id: number) {
     const user = await this.userRepository.findOneBy({
       id: id

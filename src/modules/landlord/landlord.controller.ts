@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, HttpException, HttpStatus, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { LandlordService } from './landlord.service';
 import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { LandlordDto } from 'src/dtos/Landlord.dto';
@@ -19,13 +19,23 @@ export class LandlordController {
   }
 
   @Post()
-  async createuser(lanldlor: LandlordDto) {
+  async createLandlord(@Body() lanldlor: LandlordDto) {
     const landlord = await this.landlordService.createUser(lanldlor);
 
     if (landlord)
       return landlord;
     
     throw new HttpException("C'ant create the lanldord, it seem like there is an error with the connection to database", HttpStatus.NOT_MODIFIED)
+  }
+
+  @Put("/update/:landlord_id")
+  async update(@Param("landlord_id") landlordId: number,@Body() landlord: LandlordDto) {
+    const response = await this.landlordService.update(landlordId, landlord);
+
+    if (response)
+      return response;
+
+    throw new HttpException("Landlord not found", HttpStatus.NOT_FOUND);
   }
 
   @Get(':landlord_id')

@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post} from '@nestjs/common';
+import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, Put} from '@nestjs/common';
 import { UserService } from './user.service';
 import { UserEntity } from 'src/entities/User.entity';
 import { UserDto } from 'src/dtos/User.dto';
@@ -28,11 +28,18 @@ export class UserController {
     const user = await this.userService.findOne(parseInt(userId));
     if (user)
         return user;
-    throw new HttpException("Entity not found", HttpStatus.NOT_FOUND);
-  
+    throw new HttpException("User not found", HttpStatus.NOT_FOUND);
   }
 
-  
+  @Put("/update/:user_id")
+  async update(@Param("user_id") userId: number, @Body() user: UserDto) {
+    const response = await this.userService.update(userId, user);
+
+    if (response)
+      return response;
+    
+    throw new HttpException("User not found", HttpStatus.NOT_FOUND)
+  }
 
   @Delete(':user_id')
   async remove(@Param('user_id') userId: string) {

@@ -1,46 +1,47 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { FavoriteEntity } from "src/entities/Favorite.entity";
 import { PropertyEntity } from "src/entities/Property.entity";
+import { UserDto } from "./User.dto";
 
-export class LandlordDto {
+export class LandlordDto extends UserDto {
     
     @ApiProperty()
     idCard: string;
     
-    @ApiProperty()
-    lastName: string;
+    // @ApiProperty()
+    // lastName: string;
 
-    @ApiProperty()
-    firstName: string;
+    // @ApiProperty()
+    // firstName: string;
 
-    @ApiProperty()
-    sex: string;
+    // @ApiProperty()
+    // sex: string;
 
-    @ApiProperty()
-    birthDate: Date;
+    // @ApiProperty()
+    // birthDate: Date;
 
-    @ApiProperty()
-    profession: string;
+    // @ApiProperty()
+    // profession: string;
 
-    @ApiProperty()
-    sizeFamily: number;
+    // @ApiProperty()
+    // sizeFamily: number;
 
-    @ApiProperty()
-    userName: string;
+    // @ApiProperty()
+    // userName: string;
 
-    @ApiProperty()
-    password: string;
+    // @ApiProperty()
+    // password: string;
 
-    @ApiProperty()
-    email: string;
+    // @ApiProperty()
+    // email: string;
 
-    @ApiProperty()
-    phone: string;
+    // @ApiProperty()
+    // phone: string;
     
-    @ApiProperty()
-    favorites: FavoriteEntity[];
+    // @ApiProperty()
+    // favorites: FavoriteEntity[];
 
-    @ApiProperty()
-    property: PropertyEntity[];
+    // @ApiProperty()
+    // property: PropertyEntity[];
 
 }

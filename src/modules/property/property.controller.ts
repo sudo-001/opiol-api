@@ -5,6 +5,7 @@ import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { PropertyDto } from 'src/dtos/Property.dto';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('property')
 export class PropertyController {
@@ -61,44 +62,43 @@ export class PropertyController {
     //     return "File uploaded";
     // }
 
-    
+
     // Controller to add an array of image uploaded corresponding to a property
     @Post('/pictures/:article_id')
-    @UseInterceptors(FilesInterceptor('files',3,{
-        storage: diskStorage({
-            destination: './properties',
-            filename(req, file, callback) {
-                const fileNameSplit = file.originalname.split(".");
-                const fileExt = fileNameSplit[fileNameSplit.length - 1 ];
-                callback(null, `${Date.now()}.${fileExt}`);
+    @ApiConsumes('multipart/form-data')
+    @ApiBody({
+        schema: {
+            type: 'object',
+            properties: {
+                filename: {
+                    type: 'array',
+                    items: {
+                        type: 'string',
+                        format: 'binary'
+                    }
+                }
             }
-        }),
-    }))
+        }
+    })
+    @UseInterceptors(FilesInterceptor('files'))
     async uploadPictures(
         @UploadedFiles(
-        new ParseFilePipeBuilder()
-        .addFileTypeValidator({
-            fileType: 'jpeg',
-        })
-        .addMaxSizeValidator({
-            maxSize: 1500
-        })
-        .build({
-            errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-        }),
+            
         )
-     pictures: Array<Express.Multer.File>,
-     @Param('article_id') articleId: string
-     ) {
+        pictures: Array<Express.Multer.File>,
+        @Param('article_id') articleId: string
+    ) {
         console.log(pictures)
 
         const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
 
         if (property)
             return property;
-        
+
         throw new HttpException("Can't add pictures to the property", HttpStatus.NOT_MODIFIED)
     }
+
+    @Post()
 
 
     // Controller to add property information without images to the database
@@ -108,7 +108,7 @@ export class PropertyController {
 
         if (propertyAdded)
             return propertyAdded;
-        
+
         throw new HttpException("Can't create an article", HttpStatus.NOT_MODIFIED)
     }
 
@@ -129,20 +129,20 @@ export class PropertyController {
 
         if (property)
             return property;
-        
+
         throw new HttpException("Property Not found", HttpStatus.NOT_FOUND)
     }
 
     // Controller to rate a property
     @Put('/rate/:property_id')
-    async rateProperty(@Param("property_id") propertyId: number,@Body() propertyWithNewRate: PropertyDto) {
+    async rateProperty(@Param("property_id") propertyId: number, @Body() propertyWithNewRate: PropertyDto) {
         const result = await this.propertyService.ratePoperty(propertyId, propertyWithNewRate.rate);
 
         if (result != null)
             return result;
         if (result == "The rate must be less than 5.0")
             return "The rate must be less than 5.0"
-        
+
         throw new HttpException("Property not found", HttpStatus.NOT_FOUND)
 
     }
