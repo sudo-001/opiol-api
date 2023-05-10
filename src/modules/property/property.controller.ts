@@ -90,15 +90,13 @@ export class PropertyController {
     ) {
         console.log(pictures)
 
-        const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
+        // const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
 
-        if (property)
-            return property;
+        // if (property)
+        //     return property;
 
-        throw new HttpException("Can't add pictures to the property", HttpStatus.NOT_MODIFIED)
+        // throw new HttpException("Can't add pictures to the property", HttpStatus.NOT_MODIFIED)
     }
-
-    @Post()
 
 
     // Controller to add property information without images to the database
