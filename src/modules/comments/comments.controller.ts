@@ -1,6 +1,7 @@
 import { Body, Controller, Get, HttpException, HttpStatus, Param, Post, Put } from '@nestjs/common';
 import { CommentsService } from './comments.service';
 import { CommentDto } from 'src/dtos/Comment.dto';
+import { SkipAuth } from 'src/decorators/SkipAuth.decorator';
 
 @Controller('comments')
 export class CommentsController {
@@ -9,11 +10,13 @@ export class CommentsController {
         private readonly commentsService: CommentsService
     ) {}
 
+    @SkipAuth()
     @Get()
     getAllComments() {
         return this.commentsService.findAll();
     }
 
+    @SkipAuth()
     @Post('/:property_id')
     async commentProperty(@Param('property_id') propertyId: number, @Body() comment: CommentDto) {
         const result = await this.commentsService.commentProperty(propertyId, comment);

@@ -6,6 +6,7 @@ import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { PropertyDto } from 'src/dtos/Property.dto';
 import { ApiBody, ApiConsumes } from '@nestjs/swagger';
+import { SkipAuth } from 'src/decorators/SkipAuth.decorator';
 
 @Controller('property')
 export class PropertyController {
@@ -16,12 +17,14 @@ export class PropertyController {
 
 
     // Controller to get all the properties
+    @SkipAuth()
     @Get()
     getAll() {
         return this.propertyService.findAll();
     }
 
     // Controller to get one specific property
+    @SkipAuth()
     @Get(':property_id')
     async findOne(@Param('property_id') propertyId: string) {
         const property = await this.propertyService.findOne(parseInt(propertyId));
@@ -210,6 +213,7 @@ export class PropertyController {
     }
 
     // Controller to rate a property
+    @SkipAuth()
     @Put('/rate/:property_id')
     async rateProperty(@Param("property_id") propertyId: number, @Body() propertyWithNewRate: PropertyDto) {
         const result = await this.propertyService.ratePoperty(propertyId, propertyWithNewRate.rate);

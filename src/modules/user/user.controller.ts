@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { UserService } from './user.service';
 import { UserEntity } from 'src/entities/User.entity';
 import { UserDto } from 'src/dtos/User.dto';
+import { SkipAuth } from 'src/decorators/SkipAuth.decorator';
 
 @Controller('user')
 export class UserController {
@@ -13,11 +14,18 @@ export class UserController {
     return this.userService.create(createUserDto);
   }*/
 
+  @SkipAuth()
   @Post()
-  create(@Body() user: UserDto) {
-    return this.userService.createUser(user);
+  async create(@Body() user: UserDto) {
+    const response = await this.userService.createUser(user);
+
+    if (response)
+      return response;
+    
+    throw new HttpException("It seem like an error occur in server, or this email already exist", HttpStatus.INTERNAL_SERVER_ERROR);
   }
 
+  @SkipAuth()
   @Get()
   findAll() {
     return this.userService.findAll();

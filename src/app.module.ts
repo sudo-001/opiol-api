@@ -18,12 +18,23 @@ import { MulterModule } from '@nestjs/platform-express';
 import { CommentsModule } from './modules/comments/comments.module';
 import { UserModule } from './modules/user/user.module';
 import { LandlordModule } from './modules/landlord/landlord.module';
-
+import { AuthModule } from './modules/auth/auth.module';
+import { ConfigModule } from '@nestjs/config';
+import { JwtModule } from '@nestjs/jwt';
+import { APP_GUARD } from '@nestjs/core';
+import { AuthGuard } from './modules/auth/auth.guard';
 
 
 @Module({
   imports: [
-    PropertyModule,
+    ConfigModule.forRoot(),
+    JwtModule.register({
+      global: true,
+      secret: process.env.JWT_CONSTANTS_SECRET,
+      signOptions: {
+        expiresIn: '604800s' // 7 jours
+      }
+    }),
     MulterModule.register({ dest: './uploads'}),
     TypeOrmModule.forRoot({
       // type: 'mysql',
@@ -36,13 +47,18 @@ import { LandlordModule } from './modules/landlord/landlord.module';
       entities: [AdminEntity, ApartmentEntity, ChamberEntity, CommentEntity, FavoriteEntity, HouseEntity, LandlordEntity, PaymentEntity, PictureEntity, PropertyEntity, StudioEntity, UserEntity],
       synchronize: true,
     }),
+    PropertyModule,
     CommentsModule,
     UserModule,
     LandlordModule,
+    AuthModule,
     
    
   ],
   controllers: [],
-  providers: [],
+  providers: [{
+    provide: APP_GUARD,
+    useClass: AuthGuard,
+  }],
 })
 export class AppModule {}
