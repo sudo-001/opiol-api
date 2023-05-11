@@ -60,9 +60,9 @@ export class PropertyService {
             property.pictures.push(tmpPic);
         });
 
-        await this.propertyRepository.update(propertyId, property);
+        // await this.propertyRepository.update(propertyId, property);
 
-        return this.propertyRepository.findOne({
+        return await this.propertyRepository.findOne({
             where: {id: propertyId},
             relations: ['pictures', 'comments', 'owner', 'occupant'],
         })

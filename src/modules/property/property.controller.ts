@@ -1,7 +1,7 @@
 import { Body, Controller, Delete, FileTypeValidator, Get, HttpException, HttpStatus, MaxFileSizeValidator, Param, ParseFilePipe, ParseFilePipeBuilder, Post, Put, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { PropertyService } from './property.service';
 import { PropertyEntity } from 'src/entities/Property.entity';
-import { FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
+import { FileFieldsInterceptor, FileInterceptor, FilesInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
 import { PropertyDto } from 'src/dtos/Property.dto';
@@ -80,23 +80,101 @@ export class PropertyController {
             }
         }
     })
-    @UseInterceptors(FilesInterceptor('files'))
+    @UseInterceptors(FilesInterceptor('filename', 4, {
+        storage: diskStorage({
+            destination: './uploads/properties',
+            filename(req, file, callback) {
+                const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+                const ext = extname(file.originalname);
+                const filename = `${uniqueSuffix}${ext}`;
+                callback(null, filename);
+            },
+        })
+    }))
     async uploadPictures(
         @UploadedFiles(
-            
+            new ParseFilePipeBuilder()
+                .addFileTypeValidator({
+                    fileType: 'jpeg',
+                })
+                .addMaxSizeValidator({
+                    maxSize: 780000
+                })
+                .build({
+                    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+                }),
         )
         pictures: Array<Express.Multer.File>,
         @Param('article_id') articleId: string
     ) {
         console.log(pictures)
 
-        // const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
+        const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
 
-        // if (property)
-        //     return property;
+        if (property)
+            return property;
 
-        // throw new HttpException("Can't add pictures to the property", HttpStatus.NOT_MODIFIED)
+        throw new HttpException("Can't add pictures to the property", HttpStatus.NOT_MODIFIED)
     }
+
+
+    // // Controller to add property information with images to the database in just one request from the front
+    // @Post()
+    // @ApiConsumes('multipart/form-data')
+    // @ApiBody({
+    //     schema: {
+    //         type: 'object',
+    //         properties: {
+    //             filename: {
+    //                 type: 'array',
+    //                 items: {
+    //                     type: 'string',
+    //                     format: 'binary'
+    //                 }
+    //             }
+    //         }
+    //     }
+    // })
+    // @UseInterceptors(FilesInterceptor('filename', 4, {
+    //     storage: diskStorage({
+    //         destination: './uploads/properties',
+    //         filename(req, file, callback) {
+    //             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
+    //             const ext = extname(file.originalname);
+    //             const filename = `${uniqueSuffix}${ext}`;
+    //             callback(null, filename);
+    //         },
+    //     })
+    // }))
+    // async creteProperty(@Body() property: PropertyDto,
+    // @UploadedFiles(
+    //     new ParseFilePipeBuilder()
+    //         .addFileTypeValidator({
+    //             fileType: 'jpeg',
+    //         })
+    //         .addMaxSizeValidator({
+    //             maxSize: 780000
+    //         })
+    //         .build({
+    //             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
+    //         }),
+    // ) pictures?: Array<Express.Multer.File>) {
+    //     const propertyAdded = await this.propertyService.createProperty(property);
+        
+    //     // if (propertyAdded)
+    //     //     return propertyAdded;
+    //     if (!propertyAdded)
+    //         throw new HttpException("Can't create an article", HttpStatus.NOT_MODIFIED)
+        
+    //     const response = await this.propertyService.addPicturesToProperty(parseInt(propertyAdded.id), pictures);
+
+    //     if (response)
+    //         return response;
+
+    //     throw new HttpException("Can't add pictures to this property, or c'ant find the property", HttpStatus.NOT_FOUND)
+
+    // }
+
 
 
     // Controller to add property information without images to the database
