@@ -56,6 +56,8 @@ export class PropertyEntity {
     @Max(5)
     rate: number;
 
+    @Column()
+    type: string;
 
     @CreateDateColumn()
     created: Date;

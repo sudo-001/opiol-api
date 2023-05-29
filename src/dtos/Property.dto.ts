@@ -16,6 +16,10 @@ export class PropertyDto {
     @ApiProperty()
     description: string;
 
+
+    @ApiProperty()
+    type: string;
+    
     @ApiProperty()
     numberOfRooms: number;
 

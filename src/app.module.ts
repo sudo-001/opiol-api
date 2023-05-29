@@ -23,6 +23,7 @@ import { ConfigModule } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { APP_GUARD } from '@nestjs/core';
 import { AuthGuard } from './modules/auth/auth.guard';
+import { PaymentModule } from './modules/payment/payment.module';
 
 
 @Module({
@@ -52,6 +53,7 @@ import { AuthGuard } from './modules/auth/auth.guard';
     UserModule,
     LandlordModule,
     AuthModule,
+    PaymentModule,
     
    
   ],

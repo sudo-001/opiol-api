@@ -17,9 +17,11 @@ export class AuthService {
 
     // The login function
     async signIn(email:string, password: string) {
+        
         const user = await this.userRepository.findOne({
             where: { email: email }
         });
+
         const isPasswordMatch = await bcrypt.compare(password,user?.password);
 
         if (isPasswordMatch == false ) {

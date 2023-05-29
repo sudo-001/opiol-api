@@ -3,7 +3,7 @@ import { ApiProperty } from "@nestjs/swagger";
 export class PaymentDto {
 
     @ApiProperty()
-    mount: number;
+    amount: number;
 
     @ApiProperty()
     reason: string;

@@ -16,7 +16,7 @@ export class UserService {
 
   async createUser(userDto: UserDto) {
     const user = await this.userRepository.findOne({
-      where: { email: userDto.email }
+      where: { email: userDto.email },
     });
 
     if (user != null)
@@ -30,13 +30,16 @@ export class UserService {
 
 
   findAll(): Promise<UserEntity[]> {
-    const users = this.userRepository.find();
+    const users = this.userRepository.find({
+      relations: ["favorites","payments","OccupiedProperties"]
+    });
     return users;
   }
 
   findOne(id: number) {
-    const user = this.userRepository.findOneBy({
-      id: id,
+    const user = this.userRepository.findOne({
+      where: { id: id },
+      relations: ["favorites","payments","OccupiedProperties"]
     })
     if (user)
       return user;
@@ -67,4 +70,7 @@ export class UserService {
     return user;
   }
 
+  testfunction(): string {
+    return 'User controller test';
+  }
 }
