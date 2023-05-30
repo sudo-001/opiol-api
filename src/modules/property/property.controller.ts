@@ -35,37 +35,6 @@ export class PropertyController {
     }
 
 
-    // @UseInterceptors(FileInterceptor('file', {
-    //     storage: diskStorage({
-    //         destination: './properties',
-    //         filename(req, file, callback) {
-    //             const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1e9);
-    //             const ext = extname(file.originalname);
-    //             const filename = `${uniqueSuffix}${ext}`;
-    //             callback(null, filename);
-    //         },
-    //     })
-    // }))
-    // @Post('file')
-    // uploadUserPicture(
-    //     @UploadedFile( 
-    //         new ParseFilePipeBuilder()
-    //         .addFileTypeValidator({
-    //             fileType: 'jpeg',
-    //         })
-    //         .addMaxSizeValidator({
-    //             maxSize: 1500
-    //         })
-    //         .build({
-    //             errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
-    //         }),
-    //     ) file: Express.Multer.File) {
-    //     console.log(file);
-
-    //     return "File uploaded";
-    // }
-
-
     // Controller to add an array of image uploaded corresponding to a property
     @Post('/pictures/:article_id')
     @ApiConsumes('multipart/form-data')

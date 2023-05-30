@@ -4,6 +4,8 @@ import { Repository } from 'typeorm';
 import { UserDto } from 'src/dtos/User.dto';
 import { UserEntity } from 'src/entities/User.entity';
 import * as bcrypt from 'bcrypt';
+import { PictureDto } from 'src/dtos/Picture.dto';
+import { PictureEntity } from 'src/entities/Picture.entity';
 
 @Injectable()
 export class UserService {
@@ -11,8 +13,32 @@ export class UserService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(PictureEntity)
+    private readonly pictureRepository: Repository<PictureEntity>,
 
   ) { }
+
+
+  async addPictureToUser(userId: number, picture: PictureDto ) {
+    const user = await this.userRepository.findOne({
+      where: { id: userId },
+      relations: ["picture"]
+    });
+
+    if (!user)
+      return null;
+    
+    const tmpPic = await this.pictureRepository.save(picture);
+    user.picture = tmpPic;
+
+    this.userRepository.update(user.id, user);
+
+    return await this.userRepository.findOne({
+      where: {id: userId},
+      relations: ["picture"],
+    })
+
+  }
 
   async createUser(userDto: UserDto) {
     const user = await this.userRepository.findOne({
