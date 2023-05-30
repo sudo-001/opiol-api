@@ -16,6 +16,9 @@ export class UserDto {
     birthDate: Date;
 
     @ApiProperty()
+    type: string;
+
+    @ApiProperty()
     profession: string;
 
     @ApiProperty()

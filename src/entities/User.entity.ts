@@ -35,6 +35,11 @@ export class UserEntity {
     @Column()
     userName: string;
 
+    @Column({
+        default: "user",
+    })
+    type: string;
+
     @Column()
     password: string;
 
