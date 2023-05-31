@@ -57,7 +57,7 @@ export class UserService {
 
   findAll(): Promise<UserEntity[]> {
     const users = this.userRepository.find({
-      relations: ["favorites","payments","OccupiedProperties"]
+      relations: ["favorites","payments","OccupiedProperties", "picture"]
     });
     return users;
   }
@@ -65,7 +65,7 @@ export class UserService {
   findOne(id: number) {
     const user = this.userRepository.findOne({
       where: { id: id },
-      relations: ["favorites","payments","OccupiedProperties"]
+      relations: ["favorites","payments","OccupiedProperties","picture"]
     })
     if (user)
       return user;
@@ -74,7 +74,8 @@ export class UserService {
 
   async update(userId: number, userToUpdate: UserDto) {
     const user = await this.userRepository.findOne({
-      where: { id: userId }
+      where: { id: userId },
+      relations: ["picture"],
     });
 
     if (!user)
