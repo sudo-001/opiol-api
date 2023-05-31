@@ -33,6 +33,7 @@ export class CommentsService {
         const comment = new CommentEntity();
         comment.text = commentToAdd.text;
         comment.property = property;
+        comment.owner = commentToAdd.owner;
 
         return this.CommentsRepository.save(comment);
 

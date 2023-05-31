@@ -8,4 +8,7 @@ export class CommentDto {
     @ApiProperty()
     visible: boolean;
 
+    @ApiProperty()
+    owner: string;
+
 }
