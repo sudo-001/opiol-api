@@ -19,7 +19,8 @@ export class AuthService {
     async signIn(email:string, password: string) {
         
         const user = await this.userRepository.findOne({
-            where: { email: email }
+            where: { email: email },
+            relations: ["picture"],
         });
 
         const isPasswordMatch = await bcrypt.compare(password,user?.password);
