@@ -1,5 +1,5 @@
 import { IsEmail } from "class-validator";
-import { Column, CreateDateColumn, Entity, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, JoinColumn, JoinTable, ManyToMany, OneToMany, OneToOne, PrimaryGeneratedColumn } from "typeorm";
 import { FavoriteEntity } from "./Favorite.entity";
 import { PaymentEntity } from "./Payment.entity";
 import { PropertyEntity } from "./Property.entity";
@@ -64,5 +64,6 @@ export class UserEntity {
     OccupiedProperties: PropertyEntity[];
 
     @OneToOne(() => PictureEntity)
+    @JoinColumn()
     picture: PictureEntity;
 }

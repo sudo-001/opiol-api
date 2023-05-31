@@ -6,6 +6,7 @@ import { SkipAuth } from 'src/decorators/SkipAuth.decorator';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { diskStorage } from 'multer';
 import { extname } from 'path';
+import { ApiBody, ApiConsumes } from '@nestjs/swagger';
 
 @Controller('user')
 export class UserController {
@@ -36,6 +37,18 @@ export class UserController {
   }
 
   @SkipAuth()
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    schema: {
+      type: 'object',
+      properties: {
+        file: {
+          type: 'string',
+          format: 'binary'
+        }
+      }
+    }
+  })
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/user',
