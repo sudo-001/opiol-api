@@ -27,7 +27,7 @@ export class UserController {
 
     throw new HttpException("It seem like an error occur in server, or this email already exist", HttpStatus.INTERNAL_SERVER_ERROR);
   }
-  
+
 
   @SkipAuth()
   @Get()
@@ -35,6 +35,7 @@ export class UserController {
     return this.userService.findAll();
   }
 
+  @SkipAuth()
   @UseInterceptors(FileInterceptor('file', {
     storage: diskStorage({
       destination: './uploads/user',
@@ -59,14 +60,15 @@ export class UserController {
         .build({
           errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY
         }),
-    ) file: Express.Multer.File,@Param("user_id") userId:number) {
-    console.log(file);
+    ) file: Express.Multer.File, @Param("user_id") userId: number) {
+
+    // console.log(file);
 
     const user = await this.userService.addPictureToUser(userId, file);
 
     if (user)
       return user;
-    
+
     throw new HttpException("Can't add picture to the user", HttpStatus.NOT_MODIFIED)
 
     // return "File uploaded";
