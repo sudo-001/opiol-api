@@ -181,7 +181,7 @@ export class PropertyController {
         throw new HttpException("Property Not found", HttpStatus.NOT_FOUND)
     }
 
-    @SkipAuth()
+    
     @Put('/update/:property_id')
     async update(@Param("property_id") propertyId: number, @Body() property: PropertyDto) {
         const response = await this.propertyService.update(propertyId, property);
