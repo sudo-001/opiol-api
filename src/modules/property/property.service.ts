@@ -23,6 +23,22 @@ export class PropertyService {
         return properties;
     }
 
+
+    // Service to update a property
+    async update(propertyId: number, propertyToUpdate: PropertyDto) {
+        const property = await this.propertyRepository.findOne({
+            where: { id: propertyId },
+            relations: ["comments","pictures","owner","occupant"]
+        });
+
+        if (!property)
+            return null;
+        
+        const response = await this.propertyRepository.update(propertyId, propertyToUpdate);
+
+        return response;
+    }
+
     // Service to find a specific property
     findOne(id: number) {
         const property = this.propertyRepository.findOne({
