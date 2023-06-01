@@ -62,6 +62,9 @@ export class PropertyEntity {
     @CreateDateColumn()
     created: Date;
 
+    @Column()
+    category: string;
+
     @OneToMany(type => CommentEntity, comment => comment.property)
     comments: CommentEntity[];
 

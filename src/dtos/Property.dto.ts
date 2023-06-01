@@ -16,6 +16,8 @@ export class PropertyDto {
     @ApiProperty()
     description: string;
 
+    @ApiProperty()
+    category: string;
 
     @ApiProperty()
     type: string;
