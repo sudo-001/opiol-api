@@ -8,4 +8,7 @@ export class LoginDto {
 
     @ApiProperty()
     password: string;
+
+    @ApiProperty()
+    asLandlord: boolean;
 }

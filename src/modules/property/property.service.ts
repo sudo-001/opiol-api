@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { PictureDto } from 'src/dtos/Picture.dto';
 import { PropertyDto } from 'src/dtos/Property.dto';
+import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { PictureEntity } from 'src/entities/Picture.entity';
 import { PropertyEntity } from 'src/entities/Property.entity';
 import { Repository } from 'typeorm';
@@ -14,6 +15,8 @@ export class PropertyService {
         private readonly propertyRepository: Repository<PropertyEntity>,
         @InjectRepository(PictureEntity)
         private readonly pictureRepository: Repository<PictureEntity>,
+        @InjectRepository(LandlordEntity)
+        private readonly landlordRepository: Repository<LandlordEntity>,
     ) {}
 
     // Service to find all properties
@@ -52,12 +55,24 @@ export class PropertyService {
     }
 
 
-    async createProperty(property: PropertyDto): Promise<any>{
+    async createProperty(property: PropertyDto, ownerId: number): Promise<any>{
         // Have to check images before save it
-        // 
+        const landlord = await this.landlordRepository.findOne({
+            where: { id: ownerId },
+            relations: ["properties"],
+        });
+
+        if (!landlord)
+            return null;
         
         const response = await this.propertyRepository.save(property);
-        return response;
+        response.owner = landlord;
+        return await this.propertyRepository.save(response);
+        // landlord.properties.push(response);
+        
+
+        // await this.landlordRepository.update(ownerId, landlord);
+        // return response;
     }
 
     async addPicturesToProperty(propertyId: number, pictures: PictureDto[]) {

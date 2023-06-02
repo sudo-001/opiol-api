@@ -14,7 +14,7 @@ export class AuthController {
     @SkipAuth()
     @Post("/login")
     signIn(@Body() loginDto:LoginDto ) {
-        return this.authService.signIn(loginDto.email, loginDto.password);
+        return this.authService.signIn(loginDto.email, loginDto.password, loginDto.asLandlord);
     }
 
     @SkipAuth()

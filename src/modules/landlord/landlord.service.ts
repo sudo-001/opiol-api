@@ -4,6 +4,7 @@ import { Repository } from 'typeorm';
 import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { promises } from 'dns';
 import { LandlordDto } from 'src/dtos/Landlord.dto';
+import * as bcrypt from 'bcrypt';
 
 
 @Injectable()
@@ -16,6 +17,16 @@ export class LandlordService {
   ) { }
 
   async createUser(landlord: LandlordDto) {
+    const isLandlordExist = await this.landlordRepository.findOne({
+      where: { email: landlord.email }
+    });
+
+    if (isLandlordExist != null )
+      return null;
+    
+    const hash = await bcrypt.hash(landlord.password, 10);
+    landlord.password = hash;
+    
     const response = await this.landlordRepository.save(landlord);
     return response;
   }

@@ -65,6 +65,15 @@ export class PropertyEntity {
     @Column()
     category: string;
 
+    @Column()
+    ville: string;
+
+    @Column()
+    quartier: string;
+
+    @Column()
+    pays: string;
+
     @OneToMany(type => CommentEntity, comment => comment.property)
     comments: CommentEntity[];
 

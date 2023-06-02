@@ -20,6 +20,15 @@ export class PropertyDto {
     category: string;
 
     @ApiProperty()
+    ville: string;
+
+    @ApiProperty()
+    quartier: string;
+
+    @ApiProperty()
+    pays: string;
+
+    @ApiProperty()
     type: string;
     
     @ApiProperty()

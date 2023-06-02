@@ -3,6 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 import { UserDto } from 'src/dtos/User.dto';
+import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { UserEntity } from 'src/entities/User.entity';
 import { Repository } from 'typeorm';
 
@@ -12,29 +13,51 @@ export class AuthService {
     constructor(
         @InjectRepository(UserEntity)
         private readonly userRepository: Repository<UserEntity>,
-        private jwtService: JwtService
+        private jwtService: JwtService,
+        @InjectRepository(LandlordEntity)
+        private readonly landlordRepository: Repository<LandlordEntity>,
     ) {}
 
     // The login function
-    async signIn(email:string, password: string) {
+    async signIn(email:string, password: string, asLandlord: boolean) {
         
-        const user = await this.userRepository.findOne({
-            where: { email: email },
-            relations: ["picture"],
-        });
-
-        const isPasswordMatch = await bcrypt.compare(password,user?.password);
-
-        if (isPasswordMatch == false ) {
-            throw new UnauthorizedException();
-        }
+        if (asLandlord != true) {
+            const user = await this.userRepository.findOne({
+                where: { email: email },
+                relations: ["picture"],
+            });
     
-        const payload = { email: user.email, sub: user.id };
-
-        return {
-            user: user,
-            access_token: await this.jwtService.signAsync(payload),
-        };
+            const isPasswordMatch = await bcrypt.compare(password,user?.password);
+    
+            if (isPasswordMatch == false ) {
+                throw new UnauthorizedException();
+            }
+        
+            const payload = { email: user.email, sub: user.id };
+    
+            return {
+                user: user,
+                access_token: await this.jwtService.signAsync(payload),
+            };
+        } else {
+            const landlord = await this.landlordRepository.findOne({
+                where: { email: email },
+                relations: ["picture"],
+            });
+            
+            const isPasswordMatch = await bcrypt.compare(password,landlord?.password);
+    
+            if (isPasswordMatch == false ) {
+                throw new UnauthorizedException();
+            }
+        
+            const payload = { email: landlord.email, sub: landlord.id };
+    
+            return {
+                landlord: landlord,
+                access_token: await this.jwtService.signAsync(payload),
+            };
+        }
     }
 
 

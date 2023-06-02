@@ -2,6 +2,7 @@ import { Body, Controller, Delete, Get, HttpException, HttpStatus, Param, Post, 
 import { LandlordService } from './landlord.service';
 import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { LandlordDto } from 'src/dtos/Landlord.dto';
+import { SkipAuth } from 'src/decorators/SkipAuth.decorator';
 
 
 @Controller('landlord')
@@ -18,6 +19,7 @@ export class LandlordController {
     return this.landlordService.findAll();
   }
 
+  @SkipAuth()
   @Post()
   async createLandlord(@Body() lanldlor: LandlordDto) {
     const landlord = await this.landlordService.createUser(lanldlor);

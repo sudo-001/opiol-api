@@ -36,6 +36,7 @@ export class PropertyController {
 
 
     // Controller to add an array of image uploaded corresponding to a property
+    @SkipAuth()
     @Post('/pictures/:article_id')
     @ApiConsumes('multipart/form-data')
     @ApiBody({
@@ -150,9 +151,10 @@ export class PropertyController {
 
 
     // Controller to add property information without images to the database
-    @Post()
-    async creteProperty(@Body() property: PropertyDto) {
-        const propertyAdded = await this.propertyService.createProperty(property);
+    @SkipAuth()
+    @Post(":owner_id")
+    async creteProperty(@Body() property: PropertyDto, @Param("owner_id") landlordId: number) {
+        const propertyAdded = await this.propertyService.createProperty(property,landlordId);
 
         if (propertyAdded)
             return propertyAdded;
