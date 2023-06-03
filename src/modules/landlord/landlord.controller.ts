@@ -13,7 +13,7 @@ export class LandlordController {
   create(@Body() createLandlordDto: CreateLandlordDto) {
     return this.landlordService.create(createLandlordDto);
   }*/
-
+  @SkipAuth()
   @Get()
   findAll() {
     return this.landlordService.findAll();
