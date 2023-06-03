@@ -5,6 +5,8 @@ import { LandlordEntity } from 'src/entities/Landlord.entity';
 import { promises } from 'dns';
 import { LandlordDto } from 'src/dtos/Landlord.dto';
 import * as bcrypt from 'bcrypt';
+import { PictureDto } from 'src/dtos/Picture.dto';
+import { PictureEntity } from 'src/entities/Picture.entity';
 
 
 @Injectable()
@@ -13,6 +15,8 @@ export class LandlordService {
   constructor(
     @InjectRepository(LandlordEntity)
     private readonly landlordRepository: Repository<LandlordEntity>,
+    @InjectRepository(PictureEntity)
+    private readonly pictureRepository: Repository<PictureEntity>,
 
   ) { }
 
@@ -29,6 +33,28 @@ export class LandlordService {
     
     const response = await this.landlordRepository.save(landlord);
     return response;
+  }
+
+  async addPictureToLandlord(landlordId: number, picture: PictureDto ) {
+    const landlord = await this.landlordRepository.findOne({
+      where: { id: landlordId },
+      relations: ["picture"]
+    });
+
+    if (!landlord)
+      return null;
+    
+    const tmpPic = await this.pictureRepository.save(picture);
+    landlord.picture = tmpPic;
+
+    await this.landlordRepository.update(landlord.id, landlord);
+
+    return landlord;
+    // return await this.landlordRepository.findOne({
+    //   where: {id: landlordId},
+    //   relations: ["picture"],
+    // })
+
   }
 
   findAll(): Promise<LandlordEntity[]> {
