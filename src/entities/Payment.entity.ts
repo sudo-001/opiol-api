@@ -9,6 +9,15 @@ export class PaymentEntity {
     id: number;
 
     @Column()
+    date_of_visit_occupation: Date;
+    
+    @Column()
+    momo_om: string;
+    
+    @Column({ nullable: true })
+    occupancy_duration: string;
+    
+    @Column()
     amount: number;
 
     @Column({
