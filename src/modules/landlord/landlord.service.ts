@@ -38,8 +38,7 @@ export class LandlordService {
   async addPictureToLandlord(landlordId: number, picture: PictureDto ) {
     const landlord = await this.landlordRepository.findOne({
       where: { id: landlordId },
-      relations: ["favorites","payments","picture","properties"]
-
+      relations: ["picture",]
     });
 
     if (!landlord)
@@ -50,11 +49,11 @@ export class LandlordService {
 
     await this.landlordRepository.update(landlord.id, landlord);
 
-    return landlord;
-    // return await this.landlordRepository.findOne({
-    //   where: {id: landlordId},
-    //   relations: ["picture"],
-    // })
+    // return landlord;
+    return await this.landlordRepository.findOne({
+      where: {id: landlordId},
+      relations: ["favorites","payments","picture","properties"],
+    })
 
   }
 
