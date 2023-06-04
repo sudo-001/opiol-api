@@ -58,7 +58,9 @@ export class LandlordService {
   }
 
   findAll(): Promise<LandlordEntity[]> {
-    const landlords = this.landlordRepository.find();
+    const landlords = this.landlordRepository.find({
+      relations: ["favorites","payments","picture"]
+    });
     return landlords;
   }
 
