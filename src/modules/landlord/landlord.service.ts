@@ -38,7 +38,8 @@ export class LandlordService {
   async addPictureToLandlord(landlordId: number, picture: PictureDto ) {
     const landlord = await this.landlordRepository.findOne({
       where: { id: landlordId },
-      relations: ["picture"]
+      relations: ["favorites","payments","picture","properties"]
+
     });
 
     if (!landlord)
@@ -59,7 +60,7 @@ export class LandlordService {
 
   findAll(): Promise<LandlordEntity[]> {
     const landlords = this.landlordRepository.find({
-      relations: ["favorites","payments","picture"]
+      relations: ["favorites","payments","picture","properties"]
     });
     return landlords;
   }
@@ -67,7 +68,7 @@ export class LandlordService {
   findOne(id: number) {
     const landlord = this.landlordRepository.findOne({
       where: { id: id},
-      relations: ["favorites","payments","picture"]
+      relations: ["favorites","payments","picture","properties"]
     })
     if (landlord)
       return landlord;
@@ -76,7 +77,8 @@ export class LandlordService {
   
   async update(landlordId: number, landlordToUpdate: LandlordDto) {
     const landlord = await this.landlordRepository.findOne({
-      where: { id: landlordId }
+      where: { id: landlordId },
+      relations: ["favorites","payments","picture","properties"]
     });
 
     if (!landlord)
@@ -88,8 +90,10 @@ export class LandlordService {
   }
 
   async setToDeleted(id: number) {
-    const landlord = await this.landlordRepository.findOneBy({
-      id: id
+    const landlord = await this.landlordRepository.findOne({
+      where: {id: id},
+      relations: ["favorites","payments","picture","properties"]
+
     })
     if (!landlord)
       return null;
