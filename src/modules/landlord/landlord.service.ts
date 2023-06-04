@@ -63,8 +63,9 @@ export class LandlordService {
   }
 
   findOne(id: number) {
-    const landlord = this.landlordRepository.findOneBy({
-      id: id,
+    const landlord = this.landlordRepository.findOne({
+      where: { id: id},
+      relations: ["favorites","payments","picture"]
     })
     if (landlord)
       return landlord;
