@@ -44,6 +44,9 @@ export class PaymentService {
 
         paymentToSave.amount = payment.amount;
         paymentToSave.reason = payment.reason;
+        paymentToSave.date_of_visit_occupation = payment.date_of_visit_occupation;
+        paymentToSave.momo_om = payment.momo_om;
+        paymentToSave.occupancy_duration = payment.occupancy_duration;
         paymentToSave.sender = user;
 
         return this.paymentRepository.save(paymentToSave);
