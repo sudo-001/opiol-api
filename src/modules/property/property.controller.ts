@@ -34,6 +34,26 @@ export class PropertyController {
         throw new HttpException("Entity not found", HttpStatus.NOT_FOUND);
     }
 
+    // Controller to get properties by country
+    @SkipAuth()
+    @Get('/find/country/:country')
+    findByCountry(@Param('country') country: string) {
+        return this.propertyService.findByCountry(country)
+    }
+
+    // Controller to get properties by city
+    @SkipAuth()
+    @Get('/find/city/:city')
+    findByCity(@Param('city') city: string) {
+        return this.propertyService.findByCity(city);
+    }
+
+    // Controller to get properties by city
+    @SkipAuth()
+    @Get('/find/quartier/:city')
+    findByQuartier(@Param('city') quartier: string) {
+        return this.propertyService.findByQuartier(quartier);
+    }
 
     // Controller to add an array of image uploaded corresponding to a property
     @SkipAuth()
@@ -81,6 +101,10 @@ export class PropertyController {
         @Param('article_id') articleId: string
     ) {
         console.log(pictures)
+        
+        pictures.forEach((picture) => {
+            picture.path = __dirname + picture.path;
+        })
 
         const property = await this.propertyService.addPicturesToProperty(parseInt(articleId), pictures);
 

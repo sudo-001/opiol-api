@@ -33,7 +33,7 @@ import { PaymentModule } from './modules/payment/payment.module';
       global: true,
       secret: process.env.JWT_CONSTANTS_SECRET,
       signOptions: {
-        expiresIn: '604800s' // 7 jours
+        expiresIn: '9004800s' // 7 jours
       }
     }),
     MulterModule.register({ dest: './uploads'}),

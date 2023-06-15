@@ -76,6 +76,7 @@ export class UserController {
     ) file: Express.Multer.File, @Param("user_id") userId: number) {
 
     // console.log(file);
+    file.path = __dirname + file.path;
 
     const user = await this.userService.addPictureToUser(userId, file);
 

@@ -54,6 +54,35 @@ export class PropertyService {
         return null;
     }
 
+    // Service to find properties by countries
+    findByCountry(country: string) {
+        const properties = this.propertyRepository.find({
+            where: { pays: country },
+            relations: ["comments", "pictures", "owner", "occupant"],
+        })
+
+        return properties;
+    }
+
+    // Service to find properties by city
+    findByCity(city: string) {
+        const properties = this.propertyRepository.find({
+            where: { ville: city },
+            relations: ["comments", "pictures", "owner", "occupant"]
+        })
+
+        return properties;
+    }
+
+    // Service to find properties by 'quartier'
+    findByQuartier(quartier: string) {
+        const properties = this.propertyRepository.find({
+            where: { quartier: quartier },
+            relations: ["comments", "pictures", "owner", "occupant"]
+        })
+
+        return properties;
+    }
 
     async createProperty(property: PropertyDto, ownerId: number): Promise<any>{
         // Have to check images before save it
